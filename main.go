@@ -17,5 +17,5 @@ func main() {
 	if input == "" {
 		return
 	}
-	fmt.Println(asciiart.FormatPrinter(input))
+	fmt.Print(asciiart.FormatPrinter(input))
 }
