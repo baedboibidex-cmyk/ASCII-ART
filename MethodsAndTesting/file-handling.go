@@ -7,7 +7,7 @@ import (
 
 func FileHandler() []byte {
 	// Read banner file
-	data, err := os.ReadFile("standard.txt")
+	data, err := os.ReadFile("../standard.txt")
 	if err != nil {
 		fmt.Println("Error")
 		return []byte{}
