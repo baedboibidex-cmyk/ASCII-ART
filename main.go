@@ -1,7 +1,7 @@
 package main
 
 import (
-	asciiart "ascii-art/MethodsAndLogic"
+	asciiart "ascii-art/MethodsAndTesting"
 	"fmt"
 	"os"
 )
@@ -17,5 +17,5 @@ func main() {
 	if input == "" {
 		return
 	}
-	asciiart.FormatPrinter(input)
+	fmt.Println(asciiart.FormatPrinter(input))
 }
