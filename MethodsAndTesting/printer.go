@@ -6,43 +6,56 @@ import (
 )
 
 func FormatPrinter(input string) string {
+	contentRead, readingStatus := FileHandler()
+	fmt.Println(readingStatus)
 	// Split banner into lines
-	lines := strings.Split(string(FileHandler()), "\n")
+	lines := strings.Split(string(contentRead), "\n")
 
-	// Split input by newline
+	// Split input by literal \n (not actual newline)
 	words := strings.Split(input, "\\n")
-	var new strings.Builder
-	// Process each word
+	
+	var result strings.Builder
+
+	// Process each word/line
 	for _, word := range words {
-		// If the line is empty, just print a newline
+		// If the line is empty, add a single newline
 		if word == "" {
-			fmt.Println()
+			result.WriteString("\n")
 			continue
 		}
 
 		// Each ASCII character is 8 lines tall
 		for row := 0; row < 8; row++ {
-			// if row < 0 {
-			// 	continue
-			// }
-			var newest strings.Builder
+			var lineBuilder strings.Builder
 
 			// Loop through each character
-			for i := 0; i < len(word); i++ {
-
-				char := word[i]
-
-				// Check ASCII range
+			for _, char := range word {
+				// Check ASCII range (32 = space, 126 = ~)
 				if char < 32 || char > 126 {
 					continue
 				}
 
 				// Find character position in banner
-				index := (int(char) - 32) * 9 + 1
-				newest.WriteString(lines[index+row])
+				// Each character takes 9 lines (8 art lines + 1 empty separator)
+				charIndex := int(char) - 32
+				lineIndex := charIndex*9 + 1 + row
+				
+				if lineIndex < len(lines) {
+					lineBuilder.WriteString(lines[lineIndex])
+				}
 			}
-			new.WriteString(newest.String() + "\n")
+			
+			// Add the line to result with newline
+			result.WriteString(lineBuilder.String())
+			result.WriteString("\n")
 		}
 	}
-	return new.String()
+
+	// Remove the very last newline to match expected output
+	output := result.String()
+	if len(output) > 0 && output[len(output)-1] == '\n' {
+		output = output[:len(output)-1]
+	}
+	
+	return output
 }
