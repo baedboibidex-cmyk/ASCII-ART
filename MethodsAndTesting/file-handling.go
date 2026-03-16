@@ -5,14 +5,14 @@ import (
 	"os"
 )
 
-func FileHandler() ([]byte, string) {
+func FileHandler() ([]byte, bool) {
 	// Read banner file
-	data, err := os.ReadFile("standard.txt")
+	data, err := os.ReadFile("banners/standard.txt")
 	if err != nil {
 		fmt.Println("Error")
-		return []byte{}, "couldn't read the file "
+		return []byte{}, false
 	}
 
 
-	return data, "file read successfully"
+	return data, true
 }

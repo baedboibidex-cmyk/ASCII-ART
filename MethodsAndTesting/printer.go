@@ -1,18 +1,23 @@
 package asciiart
 
 import (
+	"log"
 	"strings"
 )
 
 func FormatPrinter(input string) string {
-	contentRead, _ := FileHandler()
-	// fmt.Print(readingStatus)
+	contentRead, readingStatus := FileHandler()
+
+	if !readingStatus {
+		log.Fatal("there was an error while reading file")
+	}
+
 	// Split banner into lines
 	lines := strings.Split(string(contentRead), "\n")
 
 	// Split input by literal \n (not actual newline)
 	words := strings.Split(input, "\\n")
-	
+
 	var result strings.Builder
 
 	// Process each word/line
@@ -38,12 +43,12 @@ func FormatPrinter(input string) string {
 				// Each character takes 9 lines (8 art lines + 1 empty separator)
 				charIndex := int(char) - 32
 				lineIndex := charIndex*9 + 1 + row
-				
+
 				if lineIndex < len(lines) {
 					lineBuilder.WriteString(lines[lineIndex])
 				}
 			}
-			
+
 			// Add the line to result with newline
 			result.WriteString(lineBuilder.String())
 			result.WriteString("\n")
@@ -55,6 +60,6 @@ func FormatPrinter(input string) string {
 	if len(output) > 0 && output[len(output)-1] == '\n' {
 		output = output[:len(output)-1]
 	}
-	
+
 	return output
 }
