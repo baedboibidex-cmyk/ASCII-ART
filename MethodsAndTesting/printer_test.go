@@ -5,6 +5,7 @@ import (
 )
 
 func TestFormatPrinter(t *testing.T) {
+	// A table driven testting that stores the value of the rdge cases name, the desires input and what is expected of our function to output.
 	tests := []struct {
 		name     string
 		input    string
@@ -85,6 +86,7 @@ func TestFormatPrinter(t *testing.T) {
 }
 
 // Helper function to count lines
+// Loops through the string it receives, when a character in the string it recieves is == \n, then it should increament count by 1.
 func countLines(s string) int {
 	if s == "" {
 		return 0
