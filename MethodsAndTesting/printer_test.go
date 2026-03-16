@@ -1,46 +1,99 @@
 package asciiart
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestFormatPrinter(t *testing.T) {
-	checks := []struct {
-		input          string
-		expectedOutput string
+	tests := []struct {
+		name     string
+		input    string
+		expected string
 	}{
 		{
-			`[\]^_ 'a\n`,
-			`
- ___  __       ___   /\                  _          
-|  _| \ \     |_  | |/\|          "      ( )         
+			name:  "Simple hello",
+			input: "hello",
+			expected: ` _              _   _          
+| |            | | | |         
+| |__     ___  | | | |   ___   
+|  _ \   / _ \ | | | |  / _ \  
+| | | | |  __/ | | | | | (_) | 
+|_| |_|  \___| |_| |_|  \___/  
+                               
+                               `,
+		},
+		{
+			name:  "Special characters",
+			input: `[\]^_ 'a`,
+			expected: ` ___  __       ___   /\                  _          
+|  _| \ \     |_  | |/\|                ( )         
 | |    \ \      | |                     |/    __ _  
 | |     \ \     | |                          / _` + "`" + ` | 
 | |      \ \    | |                         | (_| | 
 | |_      \_\  _| |                          \__,_| 
 |___|         |___|       ______                    
-                         |______|                   
+                         |______|                   `,
+		},
+		{
+			name:  "With newline",
+			input: `hello\n`,
+			expected: ` _              _   _          
+| |            | | | |         
+| |__     ___  | | | |   ___   
+|  _ \   / _ \ | | | |  / _ \  
+| | | | |  __/ | | | | | (_) | 
+|_| |_|  \___| |_| |_|  \___/  
+                               
+                               
 `,
 		},
 		{
-			`hello\n`,
-			`
- _              _   _          $
-| |            | | | |         $
-| |__     ___  | | | |   ___   $
-|  _ \   / _ \ | | | |  / _ \  $
-| | | | |  __/ | | | | | (_) | $
-|_| |_|  \___| |_| |_|  \___/  $
-                               $
-                               $
-							   $
+			name:  "Double newline",
+			input: `hello\n\n`,
+			expected: ` _              _   _          
+| |            | | | |         
+| |__     ___  | | | |   ___   
+|  _ \   / _ \ | | | |  / _ \  
+| | | | |  __/ | | | | | (_) | 
+|_| |_|  \___| |_| |_|  \___/  
+                               
+                               
+
 `,
 		},
 	}
 
-	for _, word := range checks {
-		funcOutput := FormatPrinter(word.input)
-		if word.expectedOutput != funcOutput {
-			t.Errorf("Expected: %v, Got: %v", word.expectedOutput, funcOutput)
-		}
-
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := FormatPrinter(tt.input)
+			
+			if got != tt.expected {
+				// Show detailed comparison
+				t.Errorf("\nTest: %s\nInput: %q\n\nExpected (%d chars, %d lines):\n%q\n\nGot (%d chars, %d lines):\n%q",
+					tt.name,
+					tt.input,
+					len(tt.expected),
+					countLines(tt.expected),
+					tt.expected,
+					len(got),
+					countLines(got),
+					got,
+				)
+			}
+		})
 	}
+}
+
+// Helper function to count lines
+func countLines(s string) int {
+	if s == "" {
+		return 0
+	}
+	count := 1
+	for _, c := range s {
+		if c == '\n' {
+			count++
+		}
+	}
+	return count
 }

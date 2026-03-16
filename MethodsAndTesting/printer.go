@@ -1,13 +1,12 @@
 package asciiart
 
 import (
-	"fmt"
 	"strings"
 )
 
 func FormatPrinter(input string) string {
-	contentRead, readingStatus := FileHandler()
-	fmt.Println(readingStatus)
+	contentRead, _ := FileHandler()
+	// fmt.Print(readingStatus)
 	// Split banner into lines
 	lines := strings.Split(string(contentRead), "\n")
 
