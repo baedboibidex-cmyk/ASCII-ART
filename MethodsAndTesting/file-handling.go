@@ -10,7 +10,7 @@ func FileHandler() ([]byte, bool) {
 	data, err := os.ReadFile("banners/standard.txt")
 	if err != nil {
 		fmt.Println("Error")
-		return []byte{}, false // returns an empty slice of byte and false if there's is an erro
+		return []byte{}, false // returns an empty slice of byte and false if there's is an error
 	}
 
 
